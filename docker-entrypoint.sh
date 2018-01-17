@@ -6,6 +6,7 @@ set -e
 # https://github.com/kovalyshyn/docker-freeswitch/blob/vanilla/docker-entrypoint.sh
 
 if [ "$1" = 'freeswitch' ]; then
+    ARGS=-nonat
 
     if [ ! -f "/etc/freeswitch/freeswitch.xml" ]; then
         mkdir -p /etc/freeswitch
@@ -19,9 +20,10 @@ if [ "$1" = 'freeswitch' ]; then
         for f in /docker-entrypoint.d/*.sh; do
             [ -f "$f" ] && . "$f"
         done
+        [ -f /docker-entrypoint.d/args ] && ARGS=$(cat /docker-entrypoint.d/args)
     fi
     
-    exec gosu freeswitch /usr/bin/freeswitch -u freeswitch -g freeswitch -nonat -c
+    exec gosu freeswitch /usr/bin/freeswitch -u freeswitch -g freeswitch -c $ARGS
 fi
 
 exec "$@"
