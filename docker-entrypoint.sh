@@ -23,7 +23,7 @@ if [ "$1" = 'freeswitch' ]; then
         [ -f /docker-entrypoint.d/args ] && ARGS=$(cat /docker-entrypoint.d/args)
     fi
     
-    exec gosu freeswitch /usr/bin/freeswitch -u freeswitch -g freeswitch -c $ARGS
+    exec /usr/bin/freeswitch -u freeswitch -g freeswitch $ARGS
 fi
 
 exec "$@"
